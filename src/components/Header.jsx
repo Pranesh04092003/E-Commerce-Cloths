@@ -130,7 +130,7 @@ const Header = () => {
             <Link to="/pyjamas" className="mobile-link" onClick={handleNavClick}>Pyjamas Sets For Womens</Link>
             <Link to="/catalog" className="mobile-link" onClick={handleNavClick}>Catalog</Link>
             <Link to="/contact" className="mobile-link" onClick={handleNavClick}>Contact Us</Link>
-            <Link to="/cart" className="mobile-link" onClick={handleNavClick}>Cart</Link>
+{/*             <Link to="/cart" className="mobile-link" onClick={handleNavClick}>Cart</Link> */}
           </div>
         )}
       </header>
