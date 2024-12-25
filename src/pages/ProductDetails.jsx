@@ -9,7 +9,10 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 // import AnnouncementBar from '../components/AnnouncementBar';
 import ProductRecommendations from '../components/ProductRecommendations';
+import CartNotification from '../components/CartNotification';
 import '../styles/ProductDetails.css';
+import '../styles/CartNotification.css';
+import { useCartStore } from '../lib/cart-store';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -26,6 +29,8 @@ const ProductDetails = () => {
     '/placeholder_image1.svg', // Thumbnail 1
     '/placeholder_image2.svg'  // Thumbnail 2
   ]); 
+  const [showNotification, setShowNotification] = useState(false);
+  const { addToCart } = useCartStore();
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -67,6 +72,29 @@ const ProductDetails = () => {
       newThumbnails[1] = mainImage; // Swap the main image to the second thumbnail
     }
     setThumbnailImages(newThumbnails); // Update the thumbnails state
+  };
+
+  const increaseQuantity = () => {
+    setQuantity(prev => prev + 1);
+  };
+
+  const decreaseQuantity = () => {
+    setQuantity(prev => prev > 1 ? prev - 1 : 1);
+  };
+
+  const handleAddToCart = () => {
+    const cartItem = {
+      id: product.id,
+      title: product.title,
+      image: product.image,
+      originalPrice: product.originalPrice,
+      salePrice: product.salePrice,
+      selectedSize: selectedSize,
+      quantity: quantity
+    };
+    
+    addToCart(cartItem);
+    setShowNotification(true);
   };
 
   if (loading) return <div>Loading...</div>;
@@ -141,14 +169,14 @@ const ProductDetails = () => {
               <h3 className="pd-section-title">Quantity</h3>
               <div className="pd-quantity-controls">
                 <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  onClick={decreaseQuantity}
                   className="pd-quantity-button"
                 >
                   <AiOutlineMinus className="pd-icon" />
                 </button>
                 <span className="pd-quantity">{quantity}</span>
                 <button
-                  onClick={() => setQuantity(quantity + 1)}
+                  onClick={increaseQuantity}
                   className="pd-quantity-button"
                 >
                   <AiOutlinePlus className="pd-icon" />
@@ -158,9 +186,24 @@ const ProductDetails = () => {
 
             {/* Action Buttons */}
             <div className="pd-action-buttons">
-              <button className="pd-button outline">Add to cart</button>
+              <button 
+                className="pd-button outline"
+                onClick={handleAddToCart}
+                disabled={!selectedSize}
+              >
+                Add to cart
+              </button>
               <button className="pd-button primary">Buy it now</button>
             </div>
+
+            {showNotification && (
+              <CartNotification 
+                onClose={() => setShowNotification(false)}
+                productTitle={product.title}
+                selectedSize={selectedSize}
+                quantity={quantity}
+              />
+            )}
 
             {/* Product Description */}
             <div className="pd-product-description">

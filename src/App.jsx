@@ -1,3 +1,4 @@
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MainContent from './pages/MainContent';
 import BestSellers from './components/BestSellers';
@@ -6,6 +7,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AdminLayout from './pages/admin/AdminLayout';
 import ProductDetails from './pages/ProductDetails';
+import Cart from './pages/Cart';
 
 
 const App = () => {
@@ -18,6 +20,7 @@ const App = () => {
           <Route path="/bestsellers" element={<BestSellers />} />
           <Route path="/admin/*" element={<AdminLayout />} />
           <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/cart" element={<Cart />} />
         </Routes>
         <ToastContainer
           position="top-right"

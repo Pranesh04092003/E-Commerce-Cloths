@@ -1,10 +1,15 @@
 import { Link } from 'react-router-dom';
 import { SearchIcon, UserIcon, CartIcon } from './Icons';
 import { useState, useEffect } from 'react';
+import { useCartStore } from '../lib/cart-store';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const items = useCartStore((state) => state.items); // Get cart items
+
+  // Calculate total quantity of items in cart
+  const totalItems = items.reduce((total, item) => total + item.quantity, 0);
 
   useEffect(() => {
     const handleResize = () => {
@@ -59,6 +64,7 @@ const Header = () => {
             <Link to="/pyjamas" className="nav-link" onClick={handleNavClick}>Pyjamas Sets For Womens</Link>
             <Link to="/catalog" className="nav-link" onClick={handleNavClick}>Catalog</Link>
             <Link to="/contact" className="nav-link" onClick={handleNavClick}>Contact Us</Link>
+            {/* <Link to="/cart" className="nav-link" onClick={handleNavClick}>Cart</Link> */}
           </div>
         )}
 
@@ -73,7 +79,7 @@ const Header = () => {
           )}
           <Link to="/cart" className="cart-btn" onClick={handleNavClick}>
             <CartIcon />
-            <span className="cart-count">0</span>
+            <span className="cart-count">{totalItems}</span>
           </Link>
         </div>
       </nav>
