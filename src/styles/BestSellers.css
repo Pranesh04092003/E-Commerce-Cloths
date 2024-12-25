@@ -128,6 +128,8 @@
   flex-direction: column;
   opacity: 0;
   visibility: hidden;
+  max-height: 100vh;
+  overflow: hidden;
 }
 
 .shop-filter-drawer.open {
@@ -178,7 +180,7 @@
 
 .shop-filter-drawer-content {
   flex: 1;
-  padding: 0 20px;
+  padding: 20px 20px 100px 20px;
   overflow-y: auto;
 }
 
@@ -215,11 +217,17 @@
 }
 
 .shop-filter-drawer-footer {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
   padding: 16px 20px;
+  background: #fff;
   border-top: 1px solid #e5e5e5;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  z-index: 1;
 }
 
 .shop-apply-filters-btn {
