@@ -1,0 +1,93 @@
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+
+const ProductRecommendations = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/shop/products/get');
+        if (!response.ok) {
+          throw new Error('Failed to fetch recommendations');
+        }
+        const data = await response.json();
+        
+        // Filter out the current product using the ID from URL params
+        const filteredProducts = data
+          .filter(product => product._id !== id)
+          .slice(0, 4);
+        
+        setProducts(filteredProducts);
+        setLoading(false);
+      } catch (err) {
+        console.error('Error:', err);
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    fetchRecommendations();
+  }, [id]);
+
+  const handleProductClick = (product) => {
+    // Navigate with all product data
+    navigate(`/product/${product._id}`, {
+      state: {
+        id: product._id,
+        title: product.title,
+        image: product.image,
+        originalPrice: product.originalPrice,
+        salePrice: product.salePrice,
+        onSale: product.onSale,
+        isOutOfStock: product.isOutOfStock
+      }
+    });
+  };
+
+  if (loading) return <div>Loading recommendations...</div>;
+  if (error) return null;
+  if (products.length === 0) return null;
+
+  return (
+    <section className="pd-recommendations">
+      <h2 className="pd-section-title">You may also like</h2>
+      <div className="pd-recommendations-grid">
+        {products.map((product) => (
+          <div 
+            key={product._id} 
+            className="pd-product-card"
+            onClick={() => handleProductClick(product)}
+            style={{ cursor: 'pointer' }}
+          >
+            <div className="pd-product-image-container">
+              {product.onSale && (
+                <div className="pd-sale-badge">
+                  <span>Sale</span>
+                </div>
+              )}
+              <img
+                src={product.image}
+                alt={product.title}
+                className="pd-product-image"
+              />
+            </div>
+            <h3 className="pd-product-name">{product.title}</h3>
+            <div className="pd-product-price">
+              <p className="pd-sale-price">Rs. {product.salePrice?.toFixed(2)}</p>
+              <p className="pd-original-price">
+                Rs. {product.originalPrice?.toFixed(2)}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+export default ProductRecommendations;

@@ -1,0 +1,9 @@
+.product-card {
+  cursor: pointer; /* Makes the cursor change to a pointing hand */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+} 
