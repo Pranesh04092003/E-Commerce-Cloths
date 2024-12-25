@@ -155,21 +155,6 @@
   transform: translateY(1px);
 }
 
-/* Dark mode adjustments */
-@media (prefers-color-scheme: dark) {
-  .product-actions {
-    border-top-color: rgba(255,255,255,0.1);
-  }
-
-  .edit-btn {
-    background: linear-gradient(135deg, #2ecc71, #27ae60);
-  }
-
-  .delete-btn {
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
-  }
-}
-
 /* Add these button hover animations */
 @keyframes pulse {
   0% {
@@ -278,14 +263,6 @@
   }
 }
 
-/* Dark mode adjustments */
-@media (prefers-color-scheme: dark) {
-  .status-badge.not-featured {
-    background: #343a40;
-    color: #adb5bd;
-  }
-}
-
 /* Loading Animation */
 .admin-loading {
   display: flex;
@@ -347,24 +324,5 @@
   .products-grid {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 1rem;
-  }
-}
-
-/* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
-  .product-card {
-    background: #2d3436;
-  }
-
-  .product-info h3 {
-    color: #dfe6e9;
-  }
-
-  .original-price {
-    color: #b2bec3;
-  }
-
-  .admin-header h1 {
-    color: #dfe6e9;
   }
 } 

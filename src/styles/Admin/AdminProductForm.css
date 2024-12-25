@@ -288,37 +288,6 @@
   100% { box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3); }
 }
 
-/* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
-  .checkbox-group.is-featured {
-    background: linear-gradient(145deg, #2c3e50, #34495e);
-    border-color: #ffd700;
-  }
-
-  .checkbox-group.not-featured {
-    background: linear-gradient(145deg, #2d3436, #2c3e50);
-    border-color: #4a5568;
-  }
-
-  .checkbox-title {
-    color: #f8f9fa;
-  }
-
-  .is-featured .checkbox-title {
-    color: #ffd700;
-  }
-
-  .status-text.not-featured {
-    background: #343a40;
-    color: #adb5bd;
-  }
-
-  .checkbox-mark {
-    background: #343a40;
-    border-color: #4a5568;
-  }
-}
-
 /* Hover Effects */
 .checkbox-group:hover .checkbox-mark {
   transform: scale(1.05);
@@ -387,21 +356,6 @@
   font-size: 0.8em;
   margin-right: 4px;
   animation: fadeIn 0.3s ease-out;
-}
-
-/* Dark mode adjustments */
-@media (prefers-color-scheme: dark) {
-  .checkbox-mark {
-    background-color: #2d3436;
-  }
-
-  .checkbox-title {
-    color: #dfe6e9;
-  }
-
-  .status-label {
-    color: #b2bec3;
-  }
 }
 
 /* Animations */
@@ -533,48 +487,6 @@
   animation: spin 1s ease-in-out infinite;
 }
 
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  .admin-form-wrapper {
-    background: #2d3436;
-  }
-
-  .form-title {
-    color: #dfe6e9;
-  }
-
-  .label-text {
-    color: #dfe6e9;
-  }
-
-  .form-input {
-    background: #353b48;
-    border-color: #4a4a4a;
-    color: #dfe6e9;
-  }
-
-  .form-input:focus {
-    border-color: #3498db;
-  }
-
-  .currency-symbol {
-    color: #b2bec3;
-  }
-
-  .stock-status {
-    color: #b2bec3;
-  }
-
-  .cancel-btn {
-    background: #4a4a4a;
-    color: #dfe6e9;
-  }
-
-  .cancel-btn:hover {
-    background: #606060;
-  }
-}
-
 /* Responsive design */
 @media (max-width: 768px) {
   .admin-form-container {
@@ -614,16 +526,3 @@
   border-color: #8e44ad;
   animation: checkmarkPop 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  .checkbox-input:checked ~ .checkbox-mark.sale-mark {
-    background: linear-gradient(135deg, #27ae60, #219a52);
-    border-color: #27ae60;
-  }
-
-  .checkbox-input:checked ~ .checkbox-mark.featured-mark {
-    background: linear-gradient(135deg, #9b59b6, #8e44ad);
-    border-color: #9b59b6;
-  }
-} 

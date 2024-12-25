@@ -266,21 +266,6 @@
   animation: fadeIn 0.3s ease-out;
 }
 
-/* Dark mode adjustments */
-@media (prefers-color-scheme: dark) {
-  .checkbox-mark {
-    background-color: #2d3436;
-  }
-
-  .checkbox-title {
-    color: #dfe6e9;
-  }
-
-  .status-label {
-    color: #b2bec3;
-  }
-}
-
 /* Animations */
 @keyframes slideIn {
   from {
@@ -410,48 +395,6 @@
   animation: spin 1s ease-in-out infinite;
 }
 
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  .admin-form-wrapper {
-    background: #2d3436;
-  }
-
-  .form-title {
-    color: #dfe6e9;
-  }
-
-  .label-text {
-    color: #dfe6e9;
-  }
-
-  .form-input {
-    background: #353b48;
-    border-color: #4a4a4a;
-    color: #dfe6e9;
-  }
-
-  .form-input:focus {
-    border-color: #3498db;
-  }
-
-  .currency-symbol {
-    color: #b2bec3;
-  }
-
-  .stock-status {
-    color: #b2bec3;
-  }
-
-  .cancel-btn {
-    background: #4a4a4a;
-    color: #dfe6e9;
-  }
-
-  .cancel-btn:hover {
-    background: #606060;
-  }
-}
-
 /* Responsive design */
 @media (max-width: 768px) {
   .admin-form-container {
@@ -520,22 +463,6 @@
   }
   100% {
     transform: scale(1);
-  }
-}
-
-/* Dark mode adjustments */
-@media (prefers-color-scheme: dark) {
-  .featured-group {
-    border-top-color: rgba(255,255,255,0.1);
-  }
-
-  .status-text.featured {
-    background: rgba(243, 156, 18, 0.2);
-  }
-
-  .status-text.not-featured {
-    background: rgba(127, 140, 141, 0.2);
-    color: #95a5a6;
   }
 }
 
