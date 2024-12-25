@@ -1,0 +1,28 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: white;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .header-visible {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  .header-hidden {
+    transform: translateY(-100%);
+  }
+  
+  /* Add padding to the body or main content to prevent content from going under header */
+  body {
+    padding-top: 80px; /* Adjust this value based on your header height */
+  }
+  
+  /* For ProductDetails page specifically */
+  .product-details-page {
+    margin-top: 80px; /* Adjust this value based on your header height */
+  }

@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MainContent from './pages/MainContent';
 import BestSellers from './components/BestSellers';
-import AnnouncementBar from './components/AnnouncementBar';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AdminLayout from './pages/admin/AdminLayout';
@@ -14,7 +13,7 @@ const App = () => {
   return (
     <Router>
       <div className="app-container">
-        <AnnouncementBar />
+       
         <Routes>
           <Route path="/" element={<MainContent />} />
           <Route path="/bestsellers" element={<BestSellers />} />

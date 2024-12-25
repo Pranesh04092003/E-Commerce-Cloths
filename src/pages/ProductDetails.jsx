@@ -60,6 +60,13 @@ const ProductDetails = () => {
     fetchProductDetails();
   }, [id, location.state]);
 
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }, [id, location.pathname]);
+
   const handleThumbnailClick = (thumbnail) => {
     // Set the current main image to the clicked thumbnail
     const newThumbnails = [...thumbnailImages];

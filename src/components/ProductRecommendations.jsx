@@ -17,7 +17,6 @@ const ProductRecommendations = () => {
         }
         const data = await response.json();
         
-        // Filter out the current product using the ID from URL params
         const filteredProducts = data
           .filter(product => product._id !== id)
           .slice(0, 4);
@@ -35,18 +34,26 @@ const ProductRecommendations = () => {
   }, [id]);
 
   const handleProductClick = (product) => {
-    // Navigate with all product data
-    navigate(`/product/${product._id}`, {
-      state: {
-        id: product._id,
-        title: product.title,
-        image: product.image,
-        originalPrice: product.originalPrice,
-        salePrice: product.salePrice,
-        onSale: product.onSale,
-        isOutOfStock: product.isOutOfStock
-      }
+    // Scroll to top before navigation
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
     });
+
+    // Navigate with product data after a small delay to allow smooth scroll
+    setTimeout(() => {
+      navigate(`/product/${product._id}`, {
+        state: {
+          id: product._id,
+          title: product.title,
+          image: product.image,
+          originalPrice: product.originalPrice,
+          salePrice: product.salePrice,
+          onSale: product.onSale,
+          isOutOfStock: product.isOutOfStock
+        }
+      });
+    }, 400); // Adjust timing based on your scroll animation duration
   };
 
   if (loading) return <div>Loading recommendations...</div>;
