@@ -35,7 +35,7 @@ const ProductDetails = () => {
         if (location.state) {
           productData = location.state;
         } else {
-          const response = await fetch(`http://localhost:5000/api/shop/products/get/${id}`);
+          const response = await fetch(`https://e-commerce-cloths-backend-production.up.railway.app/api/shop/products/get/${id}`);
           if (!response.ok) {
             throw new Error('Failed to fetch product details');
           }

@@ -14,7 +14,7 @@ const AdminProductsList = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/shop/products/get');
+      const response = await fetch('https://e-commerce-cloths-backend-production.up.railway.app/api/shop/products/get');
       if (!response.ok) throw new Error('Failed to fetch products');
       const data = await response.json();
       setProducts(data);
@@ -29,7 +29,7 @@ const AdminProductsList = () => {
     if (!window.confirm('Are you sure you want to delete this product?')) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/admin/delete-product/${id}`, {
+      const response = await fetch(`https://e-commerce-cloths-backend-production.up.railway.app/api/admin/delete-product/${id}`, {
         method: 'DELETE'
       });
 

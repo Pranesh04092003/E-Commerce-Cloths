@@ -35,7 +35,7 @@ const AdminProductForm = () => {
   const fetchProduct = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:5000/api/shop/products/get`);
+      const response = await fetch(`https://e-commerce-cloths-backend-production.up.railway.app/api/shop/products/get`);
       if (!response.ok) throw new Error('Failed to fetch product');
       const data = await response.json();
       const product = data.find(p => p._id === id);
@@ -99,8 +99,8 @@ const AdminProductForm = () => {
       }
 
       const url = id
-        ? `http://localhost:5000/api/admin/update-product/${id}`
-        : 'http://localhost:5000/api/admin/add-products';
+        ? `https://e-commerce-cloths-backend-production.up.railway.app/api/admin/update-product/${id}`
+        : 'https://e-commerce-cloths-backend-production.up.railway.app/api/admin/add-products';
 
       const response = await fetch(url, {
         method: id ? 'PUT' : 'POST',
