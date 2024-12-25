@@ -18,6 +18,34 @@ const Cart = () => {
   // Create unique key for items with same product but different sizes
   const getItemKey = (item) => `${item.id}-${item.selectedSize}`;
 
+  const handleQuantityChange = (itemKey, newQuantity) => {
+    // Add loading for item total price
+    const totalPriceElement = document.querySelector(`[data-item-key="${itemKey}"] .total-price`);
+    totalPriceElement?.classList.add('updating', 'show-loader');
+    
+    // Add loading for estimated total
+    const estimatedElement = document.querySelector('.estimated-total');
+    estimatedElement?.classList.add('updating');
+    
+    // Update the quantity
+    updateQuantity(itemKey, newQuantity);
+
+    // Simulate loading (remove in production if using real API)
+    setTimeout(() => {
+      // Remove loading from item total
+      totalPriceElement?.classList.remove('show-loader');
+      totalPriceElement?.classList.add('price-changed');
+
+      // Remove loading from estimated total
+      estimatedElement?.classList.remove('updating');
+
+      // Cleanup animations
+      setTimeout(() => {
+        totalPriceElement?.classList.remove('updating', 'price-changed');
+      }, 400);
+    }, 300);
+  };
+
   if (items.length === 0) {
     return (
       <>
@@ -61,7 +89,7 @@ const Cart = () => {
 
         <div className="cart-items">
           {items.map((item) => (
-            <div key={getItemKey(item)} className="cart-item">
+            <div key={getItemKey(item)} className="cart-item" data-item-key={getItemKey(item)}>
               <div className="product-info">
                 <img src={item.image} alt={item.title} />
                 <div className="product-details">
@@ -77,9 +105,9 @@ const Cart = () => {
 
               <div className="quantity-section">
                 <div className="quantity-controls">
-                  <button onClick={() => updateQuantity(getItemKey(item), item.quantity - 1)}>−</button>
+                  <button onClick={() => handleQuantityChange(getItemKey(item), item.quantity - 1)}>−</button>
                   <span>{item.quantity}</span>
-                  <button onClick={() => updateQuantity(getItemKey(item), item.quantity + 1)}>+</button>
+                  <button onClick={() => handleQuantityChange(getItemKey(item), item.quantity + 1)}>+</button>
                 </div>
                 <button 
                   className="remove-item" 
@@ -101,7 +129,7 @@ const Cart = () => {
         </div>
 
         <div className="cart-footer">
-          <div className="cart-summary">
+          <div className="cart-summary">    
             <p className="estimated-total">
               Estimated total
               <span>Rs. {calculateEstimatedTotal()}.00</span>
