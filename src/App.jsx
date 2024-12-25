@@ -7,11 +7,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import AdminLayout from './pages/admin/AdminLayout';
 import ProductDetails from './pages/ProductDetails';
 import Cart from './pages/Cart';
+import ScrollToTop from './components/ScrollToTop';
 
 
 const App = () => {
   return (
     <Router>
+      <ScrollToTop />
       <div className="app-container">
        
         <Routes>
