@@ -168,11 +168,21 @@ const BestSellers = () => {
     setFilteredProducts(products);
   };
 
+  const handleDrawerOpen = () => {
+    setIsFilterDrawerOpen(true);
+    document.body.classList.add('filter-drawer-open');
+  };
+
+  const handleDrawerClose = () => {
+    setIsFilterDrawerOpen(false);
+    document.body.classList.remove('filter-drawer-open');
+  };
+
   const MobileFilterDrawer = () => (
     <>
       <div 
         className={`shop-filter-drawer-overlay ${isFilterDrawerOpen ? 'open' : ''}`}
-        onClick={() => setIsFilterDrawerOpen(false)}
+        onClick={handleDrawerClose}
       />
       <div className={`shop-filter-drawer ${isFilterDrawerOpen ? 'open' : ''}`}>
         <div className="shop-filter-drawer-header">
@@ -182,7 +192,7 @@ const BestSellers = () => {
           </div>
           <button 
             className="close-drawer"
-            onClick={() => setIsFilterDrawerOpen(false)}
+            onClick={handleDrawerClose}
           >
             <svg width="24" height="24" viewBox="0 0 24 24">
               <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
@@ -296,6 +306,12 @@ const BestSellers = () => {
     </div>
   );
 
+  useEffect(() => {
+    return () => {
+      document.body.classList.remove('filter-drawer-open');
+    };
+  }, []);
+
   return (
     <div className="shop-main-layout">
       <Header />
@@ -313,7 +329,7 @@ const BestSellers = () => {
             <div className="shop-mobile-filters">
               <button 
                 className="shop-mobile-filter-button"
-                onClick={() => setIsFilterDrawerOpen(true)}
+                onClick={handleDrawerOpen}
               >
                 <svg width="20" height="20" viewBox="0 0 20 20">
                   <path d="M3 6H17M6 10H14M8 14H12" stroke="currentColor" strokeWidth="1.5"/>
