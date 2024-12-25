@@ -2,28 +2,38 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { useCartStore } from '../lib/cart-store';
+import { CartIcon } from './Icons';
 
 const CartNotification = ({ onClose, productTitle, selectedSize }) => {
   const navigate = useNavigate();
   const [isClosing, setIsClosing] = useState(false);
   const items = useCartStore((state) => state.items);
+  const isMobile = window.innerWidth <= 768;
 
   const totalItems = items.reduce((total, item) => total + item.quantity, 0);
 
   const handleClose = () => {
     setIsClosing(true);
+    const animationDuration = isMobile ? 400 : 300;
     setTimeout(() => {
       onClose();
-    }, 300);
+    }, animationDuration);
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const isMobile = window.innerWidth <= 768;
+    const timeoutDuration = isMobile ? 3000 : 2500;
+    
+    const closeTimer = setTimeout(() => {
       handleClose();
-    }, 2500);
+    }, timeoutDuration);
 
-    return () => clearTimeout(timer);
+    return () => clearTimeout(closeTimer);
   }, []);
+
+  const notificationClass = `cart-notification-overlay ${
+    isMobile ? 'mobile' : 'desktop'
+  } ${isClosing ? (isMobile ? 'mobile-closing' : 'closing') : ''}`;
 
   const handleViewCart = () => {
     onClose();
@@ -31,22 +41,28 @@ const CartNotification = ({ onClose, productTitle, selectedSize }) => {
   };
 
   return (
-    <div className={`cart-notification-overlay ${isClosing ? 'closing' : ''}`}>
+    <div className={notificationClass}>
       <div className="cart-notification-content">
         <div className="notification-header">
           <div className="success-message">
-            <svg 
-              className="checkmark-icon" 
-              width="20" 
-              height="20" 
-              viewBox="0 0 24 24"
-            >
-              <path 
-                fill="currentColor" 
-                d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"
-              />
-            </svg>
-            Item added to your cart
+            <div className="success-icon-wrapper">
+              <svg 
+                className="checkmark-icon" 
+                width="24" 
+                height="24" 
+                viewBox="0 0 24 24"
+              >
+                <circle className="checkmark-circle" cx="12" cy="12" r="11" />
+                <path 
+                  className="checkmark-check"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  d="M6 12l4 4 8-8"
+                />
+              </svg>
+            </div>
+            <span className="success-text">Added to cart</span>
           </div>
           <button 
             onClick={handleClose} 
@@ -62,17 +78,18 @@ const CartNotification = ({ onClose, productTitle, selectedSize }) => {
           </button>
         </div>
 
-        <div className="notification-details">
+        <div className="notification-details fade-in">
           <h3>{productTitle}</h3>
           <p>Size: {selectedSize}</p>
         </div>
 
-        <div className="notification-actions">
+        <div className="notification-actions slide-up">
           <button 
             className="view-cart-button"
             onClick={handleViewCart}
           >
-            View cart ({totalItems})
+            <CartIcon />
+            <span>View cart ({totalItems})</span>
           </button>
           <button 
             className="checkout-button"

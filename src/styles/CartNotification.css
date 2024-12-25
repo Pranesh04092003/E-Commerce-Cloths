@@ -1,4 +1,4 @@
-/* Dropdown animation for cart notification */
+/* Desktop animations */
 @keyframes dropDown {
   0% {
     transform: translateY(-30%);
@@ -25,7 +25,31 @@
   }
 }
 
-.cart-notification-overlay {
+/* Mobile-specific animations */
+@keyframes mobileSlideUp {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes mobileSlideDown {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+/* Desktop styles */
+.cart-notification-overlay.desktop {
   position: fixed;
   top: 90px;
   right: 0;
@@ -33,10 +57,41 @@
   padding: 20px;
   z-index: 50;
   animation: dropDown 0.4s ease-out;
+  will-change: transform, opacity;
 }
 
-.cart-notification-overlay.closing {
+.cart-notification-overlay.desktop.closing {
   animation: fadeOut 0.3s ease-in-out forwards;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .cart-notification-overlay.mobile {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    padding: 12px;
+    z-index: 50;
+    animation: mobileSlideUp 0.4s ease-out;
+    will-change: transform, opacity;
+    transform-origin: bottom;
+  }
+
+  .cart-notification-overlay.mobile.mobile-closing {
+    animation: mobileSlideDown 0.4s ease-in-out forwards;
+    pointer-events: none;
+  }
+
+  .cart-notification-overlay.mobile .cart-notification-content {
+    min-height: auto;
+    padding: 16px;
+    border-radius: 16px 16px 0 0;
+  }
+
+  /* ... rest of mobile styles remain the same ... */
 }
 
 .cart-notification-content {
@@ -60,14 +115,39 @@
 .success-message {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   font-size: 15px;
   color: #333;
-  animation: checkmarkDrop 0.6s ease-out;
+  animation: fadeInScale 0.5s ease-out;
+}
+
+.success-icon-wrapper {
+  position: relative;
+  width: 24px;
+  height: 24px;
 }
 
 .checkmark-icon {
-  color: #00a41c;
+  width: 24px;
+  height: 24px;
+}
+
+.checkmark-circle {
+  fill: none;
+  stroke: #00a41c;
+  stroke-width: 2;
+  animation: circleAnimation 0.6s ease-in-out forwards;
+}
+
+.checkmark-check {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: checkAnimation 0.4s ease-in-out 0.2s forwards;
+}
+
+.success-text {
+  font-weight: 500;
+  animation: fadeInScale 0.5s ease-out 0.2s both;
 }
 
 .close-button {
@@ -121,25 +201,45 @@
   background: rgba(0, 0, 0, 0.08);
 }
 
-/* Success checkmark animation */
-@keyframes checkmarkDrop {
+/* Enhanced checkmark animation */
+@keyframes circleAnimation {
   0% {
-    transform: translateY(-20px);
-    opacity: 0;
-  }
-  50% {
-    transform: translateY(5px);
-    opacity: 0.7;
+    stroke-dasharray: 0, 100;
+    stroke-dashoffset: 100;
   }
   100% {
-    transform: translateY(0);
+    stroke-dasharray: 100, 100;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes checkAnimation {
+  0% {
+    stroke-dasharray: 0, 100;
+    stroke-dashoffset: 100;
+  }
+  100% {
+    stroke-dasharray: 100, 100;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
     opacity: 1;
+    transform: scale(1);
   }
 }
 
 .notification-details {
   margin-bottom: 24px;
   flex-grow: 1;
+  opacity: 0;
+  animation: fadeInScale 0.5s ease-out 0.3s forwards;
 }
 
 .notification-details h3 {
@@ -157,6 +257,8 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  opacity: 0;
+  animation: fadeInScale 0.5s ease-out 0.4s forwards;
 }
 
 .view-cart-button {
@@ -167,6 +269,24 @@
   background: white;
   font-size: 14px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.view-cart-button:hover {
+  background: #f5f5f5;
+  transform: translateY(-1px);
+}
+
+.cart-icon {
+  transition: transform 0.2s ease;
+}
+
+.view-cart-button:hover .cart-icon {
+  transform: translateX(-2px);
 }
 
 .checkout-button {
@@ -178,6 +298,12 @@
   color: white;
   font-size: 14px;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.checkout-button:hover {
+  background: #333;
+  transform: translateY(-1px);
 }
 
 .continue-shopping-button {
@@ -189,6 +315,12 @@
   color: #666;
   cursor: pointer;
   text-decoration: underline;
+  transition: all 0.2s ease;
+}
+
+.continue-shopping-button:hover {
+  color: #000;
+  text-decoration: none;
 }
 
 @media (max-width: 480px) {
@@ -196,4 +328,108 @@
     width: 100%;
     padding: 12px;
   }
-} 
+}
+
+/* Enhanced mobile animations */
+@media (max-width: 768px) {
+  .cart-notification-overlay.mobile {
+    backdrop-filter: blur(5px);
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  .cart-notification-content {
+    transform: translateY(100%);
+    animation: mobileSlideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .mobile-closing .cart-notification-content {
+    animation: mobileSlideDown 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
+  }
+}
+
+/* Cart Icon Styles */
+.cart-icon-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #00a41c;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: scaleIn 0.3s ease-out;
+  box-shadow: 0 2px 4px rgba(0, 164, 28, 0.2);
+}
+
+.cart-count.hiding {
+  animation: fadeOut 0.3s ease-out forwards;
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Mobile specific cart icon styles */
+@media (max-width: 768px) {
+  .cart-icon-wrapper svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .cart-count {
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    top: -10px;
+    right: -10px;
+  }
+}
+
+/* Animation for cart count updates */
+@keyframes countUpdate {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.cart-count-update {
+  animation: countUpdate 0.3s ease-out;
+}
+
+/* Alternative color options (uncomment to use):
+.cart-count {
+  background: #4a90e2;
+  /* background: linear-gradient(45deg, #6366f1, #8b5cf6);
+  /* background: #f59e0b;
+  /* background: #10b981;
+}
+*/ 
