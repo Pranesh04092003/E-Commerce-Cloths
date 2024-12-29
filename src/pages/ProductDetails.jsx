@@ -13,6 +13,7 @@ import CartNotification from '../components/CartNotification';
 import '../styles/ProductDetails.css';
 import '../styles/CartNotification.css';
 import { useCartStore } from '../lib/cart-store';
+import { BASE_URL } from '../utils/api';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -39,7 +40,7 @@ const ProductDetails = () => {
   useEffect(() => {
     const fetchSizes = async () => {
       try {
-        const response = await fetch(`https://e-commerce-cloths-backend-production.up.railway.app/api/shop/products/${id}/sizes`);
+        const response = await fetch(`${BASE_URL}/api/shop/products/${id}/sizes`);
         if (!response.ok) {
           throw new Error('Failed to fetch sizes');
         }
@@ -78,8 +79,7 @@ const ProductDetails = () => {
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
-        // First fetch all products
-        const response = await fetch('https://e-commerce-cloths-backend-production.up.railway.app/api/shop/products/get');
+        const response = await fetch(`${BASE_URL}/api/shop/products/get`);
         if (!response.ok) {
           throw new Error('Failed to fetch products');
         }

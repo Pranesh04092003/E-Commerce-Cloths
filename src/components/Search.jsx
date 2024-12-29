@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { SearchIcon } from './Icons';
+import { BASE_URL } from '../utils/api';
 
 const Search = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -79,7 +80,7 @@ const Search = () => {
     if (value.trim().length > 0) {
       setIsLoading(true);
       try {
-        const response = await fetch('https://e-commerce-cloths-backend-production.up.railway.app/api/shop/products/get');
+        const response = await fetch(`${BASE_URL}/api/shop/products/get`);
         const products = await response.json();
         
         const filtered = products.filter(product => 

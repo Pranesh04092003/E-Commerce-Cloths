@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles/Login.css';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import { BASE_URL } from '../utils/api';
 
 
 const Login = () => {
@@ -39,15 +40,13 @@ const Login = () => {
 
     try {
       const endpoint = isNewUser 
-        ? 'https://e-commerce-cloths-backend-production.up.railway.app/api/shop/auth/register'
-        : 'https://e-commerce-cloths-backend-production.up.railway.app/api/shop/auth/login';
+        ? `${BASE_URL}/api/shop/auth/register`
+        : `${BASE_URL}/api/shop/auth/login`;
 
       const response = await axios.post(endpoint, formData);
 
       if (response.data.success) {
-        // Use the login function from context
         login(response.data.data.user, response.data.data.token);
-        
         setSuccessMessage(isNewUser ? 'Account created successfully!' : 'Login successful!');
         
         setTimeout(() => {

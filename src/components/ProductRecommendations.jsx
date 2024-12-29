@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../utils/api';
 
 const ProductRecommendations = () => {
   const { id } = useParams();
@@ -11,7 +12,7 @@ const ProductRecommendations = () => {
   useEffect(() => {
     const fetchRecommendations = async () => {
       try {
-        const response = await fetch('https://e-commerce-cloths-backend-production.up.railway.app/api/shop/products/get');
+        const response = await fetch(`${BASE_URL}/api/shop/products/get`);
         if (!response.ok) {
           throw new Error('Failed to fetch recommendations');
         }

@@ -7,6 +7,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import '../styles/Account.css';
 import { FaEdit, FaTrash } from 'react-icons/fa';
+import { BASE_URL } from '../utils/api';
 
 const Account = () => {
   const { user, logout } = useAuth();
@@ -69,7 +70,7 @@ const Account = () => {
   const fetchAddresses = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('https://e-commerce-cloths-backend-production.up.railway.app/api/addresses', {
+      const response = await axios.get(`${BASE_URL}/api/addresses`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setAddresses(response.data.addresses);
@@ -82,7 +83,7 @@ const Account = () => {
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('https://e-commerce-cloths-backend-production.up.railway.app/api/orders', {
+      const response = await axios.get(`${BASE_URL}/api/orders`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setOrders(response.data.orders);
@@ -96,7 +97,7 @@ const Account = () => {
     try {
       const token = localStorage.getItem('token');
       await axios.patch(
-        `https://e-commerce-cloths-backend-production.up.railway.app/api/addresses/${addressId}/set-default`,
+        `${BASE_URL}/api/addresses/${addressId}/set-default`,
         {},
         { headers: { Authorization: `Bearer ${token}` }}
       );
@@ -113,7 +114,7 @@ const Account = () => {
       try {
         const token = localStorage.getItem('token');
         const response = await axios.delete(
-          `https://e-commerce-cloths-backend-production.up.railway.app/api/addresses/${addressId}`,
+          `${BASE_URL}/api/addresses/${addressId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -142,7 +143,7 @@ const Account = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        `https://e-commerce-cloths-backend-production.up.railway.app/api/addresses/${editingAddress._id}`,
+        `${BASE_URL}/api/addresses/${editingAddress._id}`,
         updatedData,
         {
           headers: {

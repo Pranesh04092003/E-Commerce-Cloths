@@ -7,6 +7,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { BASE_URL } from '../utils/api';
 
 const Checkout = () => {
   const { items } = useCartStore();
@@ -41,7 +42,7 @@ const Checkout = () => {
     if (user) {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('https://e-commerce-cloths-backend-production.up.railway.app/api/addresses', {
+        const response = await axios.get(`${BASE_URL}/api/addresses`, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -97,7 +98,7 @@ const Checkout = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const addressResponse = await axios.get('https://e-commerce-cloths-backend-production.up.railway.app/api/addresses', {
+      const addressResponse = await axios.get(`${BASE_URL}/api/addresses`, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -122,7 +123,7 @@ const Checkout = () => {
           isDefault: true
         };
 
-        await axios.post('https://e-commerce-cloths-backend-production.up.railway.app/api/addresses', addressData, {
+        await axios.post(`${BASE_URL}/api/addresses`, addressData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'

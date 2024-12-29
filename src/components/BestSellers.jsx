@@ -3,6 +3,7 @@ import ProductCard from './ProductCard';
 import Header from './Header';
 import Footer from './Footer';
 import '../styles/BestSellers.css';
+import { BASE_URL } from '../utils/api';
 
 
 const BestSellers = () => {
@@ -44,7 +45,7 @@ const BestSellers = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('https://e-commerce-cloths-backend-production.up.railway.app/api/shop/products/get');
+      const response = await fetch(`${BASE_URL}/api/shop/products/get`);
       if (!response.ok) {
         throw new Error('Failed to fetch products');
       }

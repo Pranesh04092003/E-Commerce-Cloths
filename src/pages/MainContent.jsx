@@ -4,6 +4,7 @@ import Footer from '../components/Footer';
 import { useState, useEffect } from 'react';
 import ProductCard from '../components/ProductCard';
 import '../styles/MainContent.css';
+import { BASE_URL } from '../utils/api';
 
 const MainContent = () => {
   const [products, setProducts] = useState([]);
@@ -16,7 +17,7 @@ const MainContent = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('https://e-commerce-cloths-backend-production.up.railway.app/api/shop/products/get');
+      const response = await fetch(`${BASE_URL}/api/shop/products/get`);
       if (!response.ok) {
         throw new Error('Failed to fetch products');
       }
