@@ -235,20 +235,22 @@ const Header = () => {
 
           <div className="nav-icons">
             <Search />
-            {!isMobile && (
-              <>
-                {user ? (
-                  <div style={styles.userMenu}>
-                    <Link 
-                      to="/account" 
-                      className="icon-btn" 
-                      style={styles.userIcon}
-                    >
-                      <UserIcon />
+            <>
+              {user ? (
+                <div style={styles.userMenu}>
+                  <Link 
+                    to="/account" 
+                    className="icon-btn" 
+                    style={styles.userIcon}
+                  >
+                    <UserIcon />
+                    {!isMobile && (
                       <span style={styles.userName}>
                         {user.fullName.split(' ')[0]}
                       </span>
-                    </Link>
+                    )}
+                  </Link>
+                  {!isMobile && (
                     <motion.button 
                       onClick={handleLogout}
                       aria-label="Logout"
@@ -271,15 +273,15 @@ const Header = () => {
                         👋
                       </motion.span>
                     </motion.button>
-                  </div>
-                ) : (
-                  <Link to="/login" className="icon-btn">
-                    <UserIcon />
-                  </Link>
-                )}
-              </>
-            )}
-            <Link to="/cart" className="cart-btn" onClick={handleNavClick}>
+                  )}
+                </div>
+              ) : (
+                <Link to="/login" className="icon-btn">
+                  <UserIcon />
+                </Link>
+              )}
+            </>
+            <Link to="/cart" className="cart-btn">
               <CartIcon />
               <span className="cart-count">{totalItems}</span>
             </Link>
@@ -295,12 +297,18 @@ const Header = () => {
             <Link to="/pyjamas" className="mobile-link" onClick={handleNavClick}>Pyjamas Sets For Womens</Link>
             <Link to="/catalog" className="mobile-link" onClick={handleNavClick}>Catalog</Link>
             <Link to="/contact" className="mobile-link" onClick={handleNavClick}>Contact Us</Link>
-            {/* <Link to="/cart" className="mobile-link" onClick={handleNavClick}>Cart</Link> */}
             {user && (
               <>
                 <div style={styles.mobileUserInfo}>
-                  <UserIcon />
-                  <span>{user.fullName}</span>
+                  <Link 
+                    to="/account" 
+                    className="mobile-link" 
+                    onClick={handleNavClick}
+                    style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+                  >
+                    <UserIcon />
+                    <span>{user.fullName}</span>
+                  </Link>
                 </div>
                 <button 
                   onClick={handleLogout}
