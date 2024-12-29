@@ -79,7 +79,7 @@ const Search = () => {
     if (value.trim().length > 0) {
       setIsLoading(true);
       try {
-        const response = await fetch('http://localhost:5000/api/shop/products/get');
+        const response = await fetch('https://e-commerce-cloths-backend-production.up.railway.app/api/shop/products/get');
         const products = await response.json();
         
         const filtered = products.filter(product => 

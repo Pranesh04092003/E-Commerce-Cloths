@@ -68,7 +68,7 @@ const Account = () => {
   const fetchAddresses = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/addresses', {
+      const response = await axios.get('https://e-commerce-cloths-backend-production.up.railway.app/api/addresses', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setAddresses(response.data.addresses);
@@ -81,7 +81,7 @@ const Account = () => {
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/orders', {
+      const response = await axios.get('https://e-commerce-cloths-backend-production.up.railway.app/api/orders', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setOrders(response.data.orders);
@@ -95,7 +95,7 @@ const Account = () => {
     try {
       const token = localStorage.getItem('token');
       await axios.patch(
-        `http://localhost:5000/api/addresses/${addressId}/set-default`,
+        `https://e-commerce-cloths-backend-production.up.railway.app/api/addresses/${addressId}/set-default`,
         {},
         { headers: { Authorization: `Bearer ${token}` }}
       );
@@ -112,7 +112,7 @@ const Account = () => {
       try {
         const token = localStorage.getItem('token');
         const response = await axios.delete(
-          `http://localhost:5000/api/addresses/${addressId}`,
+          `https://e-commerce-cloths-backend-production.up.railway.app/api/addresses/${addressId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -141,7 +141,7 @@ const Account = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        `http://localhost:5000/api/addresses/${editingAddress._id}`,
+        `https://e-commerce-cloths-backend-production.up.railway.app/api/addresses/${editingAddress._id}`,
         updatedData,
         {
           headers: {

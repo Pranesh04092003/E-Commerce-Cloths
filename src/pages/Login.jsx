@@ -39,8 +39,8 @@ const Login = () => {
 
     try {
       const endpoint = isNewUser 
-        ? 'http://localhost:5000/api/shop/auth/register'
-        : 'http://localhost:5000/api/shop/auth/login';
+        ? 'https://e-commerce-cloths-backend-production.up.railway.app/api/shop/auth/register'
+        : 'https://e-commerce-cloths-backend-production.up.railway.app/api/shop/auth/login';
 
       const response = await axios.post(endpoint, formData);
 
