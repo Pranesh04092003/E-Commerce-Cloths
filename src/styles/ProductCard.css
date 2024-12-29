@@ -1,9 +1,37 @@
-.product-card {
+.pro-product-card {
   cursor: pointer; /* Makes the cursor change to a pointing hand */
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.product-card:hover {
+.pro-product-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 } 
+
+.xxsale-price {
+  color: #e74c3c;
+  font-weight: bold;
+  margin: 0;
+}
+
+
+.pro-product-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  animation: slideUp 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

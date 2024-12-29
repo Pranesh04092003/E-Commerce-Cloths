@@ -44,7 +44,7 @@ const BestSellers = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('https://e-commerce-cloths-backend-production.up.railway.app/api/shop/products/get');
+      const response = await fetch('http://localhost:5000/api/shop/products/get');
       if (!response.ok) {
         throw new Error('Failed to fetch products');
       }

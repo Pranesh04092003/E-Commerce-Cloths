@@ -1,12 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useCartStore } from '../lib/cart-store';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import '../styles/Cart.css';
 
 const Cart = () => {
   const { items, updateQuantity, removeFromCart } = useCartStore();
+  const navigate = useNavigate();
 
   // Calculate estimated total using sale price
   const calculateEstimatedTotal = () => {
@@ -16,7 +18,7 @@ const Cart = () => {
   };
 
   // Create unique key for items with same product but different sizes
-  const getItemKey = (item) => `${item.id}-${item.selectedSize}`;
+  const getItemKey = (item) => `${item.id}-${item.title}-${item.selectedSize}`;
 
   const handleQuantityChange = (itemKey, newQuantity) => {
     // Add loading for item total price
@@ -89,7 +91,11 @@ const Cart = () => {
 
         <div className="cart-items">
           {items.map((item) => (
-            <div key={getItemKey(item)} className="cart-item" data-item-key={getItemKey(item)}>
+            <div 
+              key={item.cartItemId || getItemKey(item)} 
+              className="cart-item" 
+              data-item-key={getItemKey(item)}
+            >
               <div className="product-info">
                 <img src={item.image} alt={item.title} />
                 <div className="product-details">
@@ -136,8 +142,12 @@ const Cart = () => {
             </p>
             <p className="tax-note">Taxes, discounts and shipping calculated at checkout.</p>
           </div>
-          <button className="checkout-button">Check out</button>
-        </div>
+          <button 
+      className="checkout-button"
+      onClick={() => navigate('/checkout')}
+    >
+      Check out
+    </button>   </div>
       </div>
       <Footer />
     </>

@@ -1,0 +1,492 @@
+.account-container {
+  max-width: 1200px;
+  margin: 120px auto 40px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 30px;
+}
+
+.account-sidebar {
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  height: fit-content;
+  position: sticky;
+  top: 140px;
+}
+
+.account-sidebar h2 {
+  font-size: 1.5rem;
+  color: #1a1a1a;
+  margin-bottom: 25px;
+  font-weight: 600;
+  background: linear-gradient(120deg, #2563eb, #4f46e5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.account-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.nav-button {
+  padding: 14px 20px;
+  text-align: left;
+  background: none;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  color: #4b5563;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-button::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0;
+  background: linear-gradient(120deg, #3b82f6, #6366f1);
+  opacity: 0.1;
+  transition: width 0.3s ease;
+  border-radius: 12px;
+}
+
+.nav-button:hover::before {
+  width: 100%;
+}
+
+.nav-button.active {
+  background: linear-gradient(120deg, #3b82f6, #6366f1);
+  color: white;
+  font-weight: 500;
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+.account-content {
+  background: white;
+  padding: 35px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.profile-section, .orders-section, .addresses-section {
+  animation: fadeIn 0.5s ease;
+}
+
+.profile-section h3, .orders-section h3, .addresses-section h3 {
+  font-size: 1.8rem;
+  margin-bottom: 25px;
+  color: #1a1a1a;
+  position: relative;
+  display: inline-block;
+}
+
+.profile-section h3::after, .orders-section h3::after, .addresses-section h3::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 40%;
+  height: 3px;
+  background: linear-gradient(120deg, #3b82f6, #6366f1);
+  border-radius: 2px;
+}
+
+.profile-info {
+  background: #f8fafc;
+  padding: 25px;
+  border-radius: 12px;
+  line-height: 1.8;
+  margin-top: 25px;
+}
+
+.profile-info p {
+  margin: 12px 0;
+  font-size: 1.1rem;
+  color: #4b5563;
+}
+
+.profile-info strong {
+  color: #1a1a1a;
+  margin-right: 10px;
+}
+
+.addresses-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 25px;
+  margin-top: 25px;
+}
+
+.address-card {
+  position: relative;
+  padding: 25px;
+  background: #f8fafc;
+  border-radius: 12px;
+  line-height: 1.6;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.address-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+}
+
+.default-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: linear-gradient(120deg, #10b981, #059669);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+}
+
+.set-default-btn {
+  margin-top: 15px;
+  padding: 10px 16px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #4b5563;
+  font-weight: 500;
+  width: 100%;
+}
+
+.set-default-btn:hover {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+.orders-list {
+  display: grid;
+  gap: 25px;
+  margin-top: 25px;
+}
+
+.order-card {
+  padding: 25px;
+  background: #f8fafc;
+  border-radius: 12px;
+  line-height: 1.6;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.order-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+}
+
+.order-card p {
+  margin: 8px 0;
+  color: #4b5563;
+}
+
+.order-card strong {
+  color: #1a1a1a;
+  margin-right: 8px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Status badges for orders */
+.status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.status-pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-processing {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.status-shipped {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-delivered {
+  background: #f0fdf4;
+  color: #15803d;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .account-container {
+    grid-template-columns: 1fr;
+    margin: 60px auto 20px;
+    padding: 10px;
+    gap: 15px;
+  }
+
+  .account-sidebar {
+    width: 100%;
+    position: sticky;
+    top: 60px;
+    z-index: 5;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    padding: 12px 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+  }
+
+  .account-sidebar h2 {
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  .account-content {
+    position: relative;
+    z-index: 6;
+    background: white;
+  }
+
+  .addresses-section,
+  .orders-section,
+  .profile-section {
+    position: relative;
+    z-index: 6;
+  }
+
+  .address-card,
+  .order-card {
+    position: relative;
+    z-index: 6;
+    background: white;
+  }
+
+  .account-nav {
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    gap: 15px;
+  }
+
+  .nav-button {
+    white-space: nowrap;
+    padding: 12px 16px;
+  }
+
+  .account-content {
+    padding: 25px;
+  }
+
+  .addresses-list {
+    grid-template-columns: 1fr;
+  }
+
+  .order-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 380px) {
+  .account-container {
+    margin: 50px auto 15px;
+    padding: 8px;
+  }
+
+  .account-sidebar {
+    top: 50px;
+    padding: 10px;
+  }
+}
+
+/* Glassmorphism effect for cards */
+.address-card, .order-card {
+  backdrop-filter: blur(10px);
+  background: rgba(248, 250, 252, 0.8);
+}
+
+/* Shimmer effect for loading states */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.loading {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+/* Add styles for the header if needed */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: white;
+}
+
+/* Add these new styles to your existing CSS */
+
+.address-actions {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+.edit-btn,
+.delete-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.edit-btn {
+  color: #3b82f6;
+}
+
+.delete-btn {
+  color: #ef4444;
+}
+
+.edit-btn:hover,
+.delete-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.update-btn,
+.cancel-btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.update-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+}
+
+.cancel-btn {
+  background: white;
+  border: 1px solid #e5e7eb;
+}
+
+.update-btn:hover {
+  background: #2563eb;
+}
+
+.cancel-btn:hover {
+  background: #f3f4f6;
+}
+
+/* Responsive Modal */
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95%;
+    padding: 20px;
+  }
+} 

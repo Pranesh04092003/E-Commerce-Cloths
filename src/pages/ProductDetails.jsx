@@ -23,7 +23,7 @@ const ProductDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  const [selectedSize, setSelectedSize] = useState('2XL');
+  const [selectedSize, setSelectedSize] = useState(null);
   const [mainImage, setMainImage] = useState('');
   const [thumbnailImages, setThumbnailImages] = useState([
     '/placeholder_image1.svg', // Thumbnail 1
@@ -31,24 +31,79 @@ const ProductDetails = () => {
   ]); 
   const [showNotification, setShowNotification] = useState(false);
   const { addToCart } = useCartStore();
+  const [sizes, setSizes] = useState([]);
+  const [brand, setBrand] = useState('');
+  const [productDescription, setProductDescription] = useState([]);
+
+  // Polling for size updates
+  useEffect(() => {
+    const fetchSizes = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/api/shop/products/${id}/sizes`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch sizes');
+        }
+        const sizesData = await response.json();
+        
+        // Only update if there are actual changes
+        if (JSON.stringify(sizesData) !== JSON.stringify(sizes)) {
+          setSizes(sizesData);
+          
+          // Set the first available size as default if no size is selected
+          if (!selectedSize) {
+            const firstAvailableSize = sizesData.find(size => !size.disabled);
+            setSelectedSize(firstAvailableSize?.name || null);
+          }
+          // If selected size becomes disabled, switch to first available size
+          else if (sizesData.find(size => size.name === selectedSize)?.disabled) {
+            const firstAvailableSize = sizesData.find(size => !size.disabled);
+            setSelectedSize(firstAvailableSize?.name || null);
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching sizes:', err);
+      }
+    };
+
+    // Initial fetch
+    fetchSizes();
+
+    // Set up polling interval (every 2 seconds)
+    const pollInterval = setInterval(fetchSizes, 2000);
+
+    // Cleanup on unmount
+    return () => clearInterval(pollInterval);
+  }, [id, selectedSize, sizes]);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
-        let productData;
+        // First fetch all products
+        const response = await fetch('http://localhost:5000/api/shop/products/get');
+        if (!response.ok) {
+          throw new Error('Failed to fetch products');
+        }
+        const allProducts = await response.json();
         
-        if (location.state) {
-          productData = location.state;
-        } else {
-          const response = await fetch(`https://e-commerce-cloths-backend-production.up.railway.app/api/shop/products/get/${id}`);
-          if (!response.ok) {
-            throw new Error('Failed to fetch product details');
-          }
-          productData = await response.json();
+        // Find the specific product that matches the ID from the URL
+        const productData = allProducts.find(product => product._id === id);
+        
+        if (!productData) {
+          throw new Error('Product not found');
         }
 
         setProduct(productData);
         setMainImage(productData.image);
+        // Set brand from the matched product
+        setBrand(productData.brand || '');
+        // Set thumbnails from the matched product
+        setThumbnailImages(productData.thumbnails || [productData.image]);
+        // Set product description from the matched product
+        setProductDescription(
+          Array.isArray(productData.description) 
+            ? productData.description 
+            : [productData.description || '']
+        );
         setLoading(false);
       } catch (err) {
         console.error('Error fetching product:', err);
@@ -58,7 +113,7 @@ const ProductDetails = () => {
     };
 
     fetchProductDetails();
-  }, [id, location.state]);
+  }, [id]);
 
   useEffect(() => {
     window.scrollTo({
@@ -145,7 +200,7 @@ const ProductDetails = () => {
           {/* Product Details */}
           <div className="pd-product-details">
             <div>
-              <h2 className="pd-brand">SREE GARMENTS</h2>
+              <h2 className="pd-brand">{brand}</h2>
               <h1 className="pd-product-title">{product.title || 'Product Title'}</h1>
             </div>
 
@@ -158,17 +213,22 @@ const ProductDetails = () => {
             {/* Size Selector */}
             <div className="pd-size-selector">
               <h3 className="pd-section-title">Size</h3>
-              <div className="pd-size-options">
-                {['M', 'L', 'XL', '2XL'].map((size) => (
-                  <button
-                    key={size}
-                    className={`pd-size-option ${selectedSize === size ? 'selected' : ''}`}
-                    onClick={() => setSelectedSize(size)}
-                  >
-                    {size}
-                  </button>
-                ))}
-              </div>
+              {sizes.length === 0 || sizes.every((size) => size.disabled) ? (
+                <p className="pd-no-sizes">Size not available</p>
+              ) : (
+                <div className="pd-size-options">
+                  {sizes.map((size) => (
+                    <button
+                      key={size.name}
+                      className={`pd-size-option ${selectedSize === size.name ? 'selected' : ''} ${size.disabled ? 'disabled' : ''}`}
+                      onClick={() => !size.disabled && setSelectedSize(size.name)}
+                      disabled={size.disabled}
+                    >
+                      {size.name}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Quantity Selector */}
@@ -214,10 +274,22 @@ const ProductDetails = () => {
 
             {/* Product Description */}
             <div className="pd-product-description">
-              <p>Floral Maternity and feeding wear ankle length with puff sleeves.</p>
-              <p>Zipless comfortable feeding wear. Inner feeding neck is round-shaped.</p>
-              <p>100% soft hosiery cotton, with a right-side pocket.</p>
-              <p className="pd-note">There may be a small variation in the colour due to photography and lighting.</p>
+              {productDescription.length > 0 ? (
+                productDescription.map((paragraph, index) => (
+                  <p 
+                    key={index}
+                    style={
+                      productDescription.length > 1 && index === productDescription.length - 1 
+                        ? { color: '#6b7280' } 
+                        : {}
+                    }
+                  >
+                    {paragraph}
+                  </p>
+                ))
+              ) : (
+                <p className="pd-note">Product details will be updated soon.</p>
+              )}
             </div>
 
             {/* Share Button */}
@@ -243,4 +315,3 @@ const ProductDetails = () => {
 };
 
 export default ProductDetails;
-

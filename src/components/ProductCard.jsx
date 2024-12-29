@@ -20,7 +20,7 @@ const ProductCard = ({ id, title, image, originalPrice, salePrice, onSale, isOut
   };
 
   return (
-    <div className="product-card" onClick={handleCardClick}>
+    <div className="pro-product-card" onClick={handleCardClick}>
       {onSale && <span className="sale-badge">Sale</span>}
       {!onSale && isOutOfStock && <span className="out-of-stock-badge">Out of Stock</span>}
       <img src={image} alt={title} />
@@ -29,7 +29,7 @@ const ProductCard = ({ id, title, image, originalPrice, salePrice, onSale, isOut
       </div>
       <div className="price-container">
         <span className="original-price">Rs. {originalPrice.toFixed(2)}</span>
-        {onSale && <span className="sale-price">Rs. {salePrice.toFixed(2)}</span>}
+        {onSale && <span className="xxsale-price">Rs. {salePrice.toFixed(2)}</span>}
       </div>
     </div>
   );

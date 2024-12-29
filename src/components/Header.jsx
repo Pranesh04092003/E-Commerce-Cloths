@@ -1,18 +1,28 @@
 import { Link } from 'react-router-dom';
 import { SearchIcon, UserIcon, CartIcon } from './Icons';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useCartStore } from '../lib/cart-store';
 import AnnouncementBar from './AnnouncementBar';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { motion, AnimatePresence } from 'framer-motion';
+import Search from './Search';
 
 const Header = () => {
+  
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
   const items = useCartStore((state) => state.items);
   const headerHeight = '120px'; // Combined height of announcement bar and header
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   const totalItems = items.reduce((total, item) => total + item.quantity, 0);
+
+  
 
   useEffect(() => {
     const handleResize = () => {
@@ -46,6 +56,124 @@ const Header = () => {
 
   const handleNavClick = () => {
     setIsMenuOpen(false);
+  };
+
+  const handleLogout = async () => {
+    try {
+      // First, clear the auth context
+      logout();
+      
+      // Clear any additional storage if needed
+      localStorage.clear(); // This will clear ALL localStorage items
+      
+      // Close mobile menu if open
+      setIsMenuOpen(false);
+      
+      // Show success toast
+      toast.success('👋 Logged out successfully!', {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        style: {
+          background: '#4CAF50',
+          color: 'white',
+          borderRadius: '10px',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          fontSize: '16px',
+          padding: '16px 24px',
+        },
+        progressStyle: {
+          background: 'rgba(255, 255, 255, 0.7)'
+        }
+      });
+
+      // Navigate after a brief delay
+      setTimeout(() => {
+        navigate('/', { replace: true });
+      }, 1000);
+      
+      console.log('Logged out successfully');
+    } catch (error) {
+      console.error('Logout error:', error);
+      
+      // Show error toast if logout fails
+      toast.error('Logout failed. Please try again.', {
+        position: "top-center",
+        autoClose: 3000,
+        style: {
+          background: '#ef4444',
+          color: 'white',
+          borderRadius: '10px',
+        }
+      });
+    }
+  };
+
+  const styles = {
+    userMenu: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      position: 'relative'
+    },
+    userIcon: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '4px'
+    },
+    userName: {
+      fontSize: '0.9rem',
+      color: '#4b5563'
+    },
+    logoutBtn: {
+      padding: '6px 12px',
+      backgroundColor: '#ef4444',
+      color: 'white',
+      border: 'none',
+      borderRadius: '4px',
+      fontSize: '0.85rem',
+      cursor: 'pointer',
+      transition: 'all 0.2s ease',
+      '&:hover': {
+        backgroundColor: '#dc2626'
+      }
+    },
+    mobileUserInfo: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      padding: '12px 16px',
+      borderBottom: '1px solid #e5e7eb',
+      color: '#4b5563'
+    },
+    mobileLogoutBtn: {
+      width: '100%',
+      padding: '12px 16px',
+      backgroundColor: '#ef4444',
+      color: 'white',
+      border: 'none',
+      textAlign: 'left',
+      fontSize: '1rem',
+      cursor: 'pointer',
+      '&:hover': {
+        backgroundColor: '#dc2626'
+      }
+    }
+  };
+
+  // Add button animation variants
+  const buttonVariants = {
+    hover: {
+      scale: 1.05,
+      boxShadow: '0 5px 15px rgba(0,0,0,0.1)',
+    },
+    tap: {
+      scale: 0.95,
+    }
   };
 
   return (
@@ -106,13 +234,50 @@ const Header = () => {
           )}
 
           <div className="nav-icons">
-            <button aria-label="Search" className="icon-btn">
-              <SearchIcon />
-            </button>
+            <Search />
             {!isMobile && (
-              <button aria-label="Account" className="icon-btn">
-                <UserIcon />
-              </button>
+              <>
+                {user ? (
+                  <div style={styles.userMenu}>
+                    <Link 
+                      to="/account" 
+                      className="icon-btn" 
+                      style={styles.userIcon}
+                    >
+                      <UserIcon />
+                      <span style={styles.userName}>
+                        {user.fullName.split(' ')[0]}
+                      </span>
+                    </Link>
+                    <motion.button 
+                      onClick={handleLogout}
+                      aria-label="Logout"
+                      variants={buttonVariants}
+                      whileHover="hover"
+                      whileTap="tap"
+                      style={{
+                        ...styles.logoutBtn,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                      }}
+                    >
+                      <span>Logout</span>
+                      <motion.span
+                        initial={{ rotate: 0 }}
+                        animate={{ rotate: [0, -45, 0] }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        👋
+                      </motion.span>
+                    </motion.button>
+                  </div>
+                ) : (
+                  <Link to="/login" className="icon-btn">
+                    <UserIcon />
+                  </Link>
+                )}
+              </>
             )}
             <Link to="/cart" className="cart-btn" onClick={handleNavClick}>
               <CartIcon />
@@ -131,6 +296,31 @@ const Header = () => {
             <Link to="/catalog" className="mobile-link" onClick={handleNavClick}>Catalog</Link>
             <Link to="/contact" className="mobile-link" onClick={handleNavClick}>Contact Us</Link>
             {/* <Link to="/cart" className="mobile-link" onClick={handleNavClick}>Cart</Link> */}
+            {user && (
+              <>
+                <div style={styles.mobileUserInfo}>
+                  <UserIcon />
+                  <span>{user.fullName}</span>
+                </div>
+                <button 
+                  onClick={handleLogout}
+                  style={{
+                    ...styles.mobileLogoutBtn,
+                    '&:hover': {
+                      backgroundColor: '#dc2626'
+                    }
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.backgroundColor = '#dc2626';
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.backgroundColor = '#ef4444';
+                  }}
+                >
+                  Logout
+                </button>
+              </>
+            )}
           </div>
         )}
       </header>

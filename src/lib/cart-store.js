@@ -29,55 +29,84 @@ const storage = {
 
 const useCartStore = create(
   persist(
-    (set) => ({
+    (set, get) => ({
       items: [],
       
-      addToCart: (product) => set((state) => {
-        const itemKey = `${product.id}-${product.selectedSize}`;
-        const existingItem = state.items.find(item => 
-          item.id === product.id && item.selectedSize === product.selectedSize
+      addToCart: (product) => {
+        const { items } = get();
+        // Create a unique key using both product ID and title to differentiate products
+        const itemKey = `${product.id}-${product.title}-${product.selectedSize}`;
+        
+        // Check if exact same product exists
+        const existingItemIndex = items.findIndex(
+          item => 
+            item.id === product.id && 
+            item.title === product.title && 
+            item.selectedSize === product.selectedSize
         );
-        
-        if (existingItem) {
-          return {
-            items: state.items.map(item =>
-              (item.id === product.id && item.selectedSize === product.selectedSize)
-                ? { ...item, quantity: item.quantity + product.quantity }
-                : item
-            ),
-          };
+
+        if (existingItemIndex !== -1) {
+          // Update quantity of existing item
+          const updatedItems = [...items];
+          updatedItems[existingItemIndex].quantity += product.quantity || 1;
+          set({ items: updatedItems });
+        } else {
+          // Add as new item
+          set({ 
+            items: [...items, { 
+              ...product, 
+              quantity: product.quantity || 1,
+              cartItemId: itemKey // Add a unique identifier for each cart item
+            }] 
+          });
         }
-        
-        return {
-          items: [...state.items, { ...product }],
-        };
-      }),
+      },
 
       removeFromCart: (itemKey) => set((state) => ({
-        items: state.items.filter(item => `${item.id}-${item.selectedSize}` !== itemKey),
-      })),
-
-      updateQuantity: (itemKey, newQuantity) => set((state) => ({
-        items: state.items.map(item =>
-          `${item.id}-${item.selectedSize}` === itemKey
-            ? { ...item, quantity: Math.max(1, newQuantity) }
-            : item
+        items: state.items.filter(item => 
+          `${item.id}-${item.title}-${item.selectedSize}` !== itemKey
         ),
       })),
 
+      updateQuantity: (itemKey, newQuantity) => {
+        const { items } = get();
+        
+        if (newQuantity < 1) {
+          set({
+            items: items.filter(
+              item => `${item.id}-${item.title}-${item.selectedSize}` !== itemKey
+            )
+          });
+          return;
+        }
+
+        set({
+          items: items.map(item => 
+            `${item.id}-${item.title}-${item.selectedSize}` === itemKey
+              ? { ...item, quantity: newQuantity }
+              : item
+          )
+        });
+      },
+
       clearExpiredCart: () => set({ items: [] }),
 
-      getTotalItems: () => useCartStore.getState().items.length,
+      getTotalItems: () => {
+        const { items } = get();
+        return items.reduce((total, item) => total + item.quantity, 0);
+      },
 
       getTotalPrice: () => {
-        const items = useCartStore.getState().items;
-        return items.reduce((total, item) => total + (item.salePrice * item.quantity), 0);
+        const { items } = get();
+        return items.reduce((total, item) => 
+          total + (item.salePrice * item.quantity), 0
+        );
       },
     }),
     {
       name: 'cart-storage',
       storage: createJSONStorage(() => storage),
-      version: 1, // Add version for potential future migrations
+      version: 1,
     }
   )
 );
