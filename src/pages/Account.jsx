@@ -17,6 +17,7 @@ const Account = () => {
   const isMobile = window.innerWidth <= 768;
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingAddress, setEditingAddress] = useState(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   // Define animation variants
   const containerVariants = {
@@ -321,7 +322,15 @@ const Account = () => {
 
           {activeTab === 'addresses' && (
             <div className="addresses-section">
-              <h3>Your Addresses</h3>
+              <div className="addresses-header">
+                <h3>Your Addresses</h3>
+                <button 
+                  className="add-address-btn"
+                  onClick={() => setIsAddModalOpen(true)}
+                >
+                  + Add New Address
+                </button>
+              </div>
               <div className="addresses-list">
                 {addresses.map(address => (
                   <div key={address._id} className="address-card">
@@ -331,17 +340,21 @@ const Account = () => {
                         className="edit-btn"
                         title="Edit Address"
                       >
-                        <FaEdit />
+                        <FaEdit size={20} />
                       </button>
                       <button 
                         onClick={() => handleDeleteAddress(address._id)}
                         className="delete-btn"
                         title="Delete Address"
                       >
-                        <FaTrash />
+                        <FaTrash size={20} />
                       </button>
                     </div>
-                    {address.isDefault && <span className="default-badge">Default</span>}
+                    {address.isDefault && (
+                      <div className="default-badge-container">
+                        <span className="default-badge">Default</span>
+                      </div>
+                    )}
                     <p>{address.address}</p>
                     <p>{address.city}, {address.state} - {address.pincode}</p>
                     <p>Phone: {address.phone}</p>
